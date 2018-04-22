@@ -36,11 +36,13 @@ class App extends React.Component {
         // convert response to json
 
         const data = await api_call.json();
-        console.log(data);
-
-        // set the values of the the state
-        // this.state.temperature = aldkhfa  
-        // never directly manipulate the state bad BAD bad practice instead use setState OBj
+        if(city && country) {
+            // check to see if the values are set to true or else do nothing
+            // this will keep our app from breaking
+            console.log(data);
+                 // set the values of the the state
+                // this.state.temperature = aldkhfaha WRONG!  
+                // never directly manipulate the state bad BAD bad practice instead use setState OBj
         this.setState({
             // nothing to see here just sorting my api call 
             temperature: data.main.temp,
@@ -48,12 +50,22 @@ class App extends React.Component {
             country: data.sys.country,
             humidity: data.main.humidity,
             description: data.weather[0].description,
-            error: ''
-            // now getting it to show in my weather componenet
+            error: ""
+            // next question to ask..getting it to show in my weather componenet on the dom?? PROPS
+          })
+        } else {
+            this.setState({
+                
+                temperature: undefined,
+                city: undefined,
+                country: undefined,
+                humidity: undefined,
+                description: undefined,
+                error: "Enter a City and Country", 
         })
-
-       
     }
+}
+
     // arrow functions allows us to use 'this' independently 
     render() {
         return (
@@ -62,7 +74,15 @@ class App extends React.Component {
                 <Titles />
                 {/* prop passed to  */}
                 <Form getWeather={this.getWeather}/>
-                <Weather />
+                <Weather 
+                    // props have been added 
+                    temperature={this.state.temperature}
+                    city={this.state.city}
+                    country={this.state.country}
+                    humidity={this.state.humidity}
+                    description={this.state.description}
+                    error={this.state.error}
+                />
 
             </div>
         );
